@@ -17,8 +17,7 @@ class Presentation2Test {
         assertEquals(200.0, Presentation2.charger(Paths.get("config.txt")).calcul());
     }
     @Test void changementDuDaoUniquementParConfiguration() throws Exception {
-        Path fichier = config(DaoAlternatif.class.getName() + "\nmetier.MetierImpl\n");
-        assertEquals(42.0, Presentation2.charger(fichier).calcul());
+        assertEquals(500.0, Presentation2.charger(Paths.get("config2.txt")).calcul());
     }
     @Test void calculSansInjectionRefuse() {
         assertThrows(IllegalStateException.class, () -> new MetierImpl().calcul());
@@ -52,9 +51,6 @@ class Presentation2Test {
         Path fichier = config("dao.DaoImpl\n" + MetierRefusant.class.getName());
         ConfigurationException erreur = assertThrows(ConfigurationException.class, () -> Presentation2.charger(fichier));
         assertInstanceOf(IllegalArgumentException.class, erreur.getCause());
-    }
-    public static class DaoAlternatif implements IDao {
-        public double getValue() { return 21.0; }
     }
     public static class DaoSansConstructeur implements IDao {
         public DaoSansConstructeur(int valeur) { }
