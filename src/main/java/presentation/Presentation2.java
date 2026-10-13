@@ -8,6 +8,8 @@ import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.util.List;
+import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Presentation2 {
     public static void main(String[] args) {
@@ -26,9 +28,12 @@ public class Presentation2 {
     }
 
     public static IMetier charger(Path fichier) throws ConfigurationException {
-        List<String> lignes;
-        try {
-            lignes = Files.readAllLines(fichier, StandardCharsets.UTF_8);
+        List<String> lignes = new ArrayList<>();
+        try (Scanner scanner = new Scanner(fichier, StandardCharsets.UTF_8)) {
+            while (scanner.hasNextLine()) {
+                lignes.add(scanner.nextLine());
+            }
+            if (scanner.ioException() != null) throw scanner.ioException();
         } catch (IOException e) {
             throw new ConfigurationException("Impossible de lire la configuration : " + fichier.toAbsolutePath(), e);
         }
